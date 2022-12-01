@@ -2,6 +2,7 @@ package com.ruoyi.project.his.mapper;
 
 import java.util.List;
 
+import com.ruoyi.project.his.domain.AppintmentFilter;
 import com.ruoyi.project.his.domain.HisHospital;
 import com.ruoyi.project.his.domain.HisHospitalAppointment;
 import org.apache.ibatis.annotations.Mapper;
@@ -31,5 +32,6 @@ public interface HisHospitalAppointmentMapper
      * @return 结果
      */
     public int insertHisHospitalAppointment(HisHospitalAppointment hisHospitalAppointment);
+
 
 }

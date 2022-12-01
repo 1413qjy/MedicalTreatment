@@ -15,10 +15,11 @@
         <result property="inductionTime"    column="induction_time"    />
         <result property="yiling"    column="yiling"    />
         <result property="image"    column="image"    />
+        <result property="isWorking"    column="is_working"    />
     </resultMap>
 
     <sql id="selectHisHospitalMedicalVo">
-        select medical_id, medical_name, medical_age, medical_post, hospital_id, depts_id, depts_minute, induction_time, yiling, image from his_hospital_medical
+        select medical_id, medical_name, medical_age, medical_post, hospital_id, depts_id, depts_minute, induction_time, yiling, image, is_working from his_hospital_medical
     </sql>
 
     <select id="selectHisHospitalMedicalList" parameterType="HisHospitalMedical" resultMap="HisHospitalMedicalResult">
@@ -33,12 +34,26 @@
             <if test="inductionTime != null "> and induction_time = #{inductionTime}</if>
             <if test="yiling != null  and yiling != ''"> and yiling = #{yiling}</if>
             <if test="image != null  and image != ''"> and image = #{image}</if>
+            <if test="isWorking != null  and isWorking != ''"> and is_working = #{isWorking}</if>
         </where>
     </select>
 
     <select id="selectHisHospitalMedicalById" parameterType="Long" resultMap="HisHospitalMedicalResult">
         <include refid="selectHisHospitalMedicalVo"/>
         where medical_id = #{medicalId}
+    </select>
+
+    <select id="selectAtList" parameterType="HisHospitalMedical" resultMap="HisHospitalMedicalResult">
+        select m.medical_id, m.medical_name, m.medical_age, m.medical_post, m.hospital_id, m.depts_id, m.depts_minute, m.induction_time, m.yiling, m.image
+        from his_hospital_medical as m
+        left join his_working_time as w on m.medical_id = w.medical_id
+        where ${appintmentFilter.day} like concat('%',#{appintmentFilter.time},'%') and m.hospital_id = #{appintmentFilter.hospitalId} and m.depts_id = #{appintmentFilter.deptsId}
+    </select>
+
+    <select id="selectHisHospitalMedicaWorkinglList" parameterType="HisHospitalMedical" resultMap="HisHospitalMedicalResult">
+        select medical_id, medical_name, medical_age, medical_post, hospital_id, depts_id, depts_minute, induction_time, yiling, image, is_working
+        from his_hospital_medical
+        where is_working = 0
     </select>
 
     <insert id="insertHisHospitalMedical" parameterType="HisHospitalMedical" useGeneratedKeys="true" keyProperty="medicalId">
@@ -82,6 +97,13 @@
         </trim>
         where medical_id = #{medicalId}
     </update>
+
+    <update id="updateMedicalIsWorking">
+        update his_hospital_medical
+        set is_working = 1
+        where medical_id = #{medicalId}
+    </update>
+
 
     <delete id="deleteHisHospitalMedicalById" parameterType="Long">
         delete from his_hospital_medical where medical_id = #{medicalId}

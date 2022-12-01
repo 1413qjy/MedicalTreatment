@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.his.mapper.HisRegSumMapper">
+    
+    <resultMap type="HisRegSum" id="HisRegSumResult">
+        <result property="regSumId"    column="reg_sum_id"    />
+        <result property="medicalId"    column="medical_id"    />
+        <result property="regSumJson"    column="reg_sum_json"    />
+    </resultMap>
+
+    <sql id="selectHisRegSumVo">
+        select reg_sum_id, medical_id, reg_sum_json from his_reg_sum
+    </sql>
+
+    <select id="selectHisRegSumList" parameterType="HisRegSum" resultMap="HisRegSumResult">
+        <include refid="selectHisRegSumVo"/>
+        <where>  
+            <if test="medicalId != null "> and medical_id = #{medicalId}</if>
+            <if test="regSumJson != null  and regSumJson != ''"> and reg_sum_json = #{regSumJson}</if>
+        </where>
+    </select>
+    
+    <select id="selectHisRegSumById" parameterType="Long" resultMap="HisRegSumResult">
+        <include refid="selectHisRegSumVo"/>
+        where reg_sum_id = #{regSumId}
+    </select>
+        
+    <insert id="insertHisRegSum" parameterType="HisRegSum" useGeneratedKeys="true" keyProperty="regSumId">
+        insert into his_reg_sum
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="medicalId != null">medical_id,</if>
+            <if test="regSumJson != null">reg_sum_json,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="medicalId != null">#{medicalId},</if>
+            <if test="regSumJson != null">#{regSumJson},</if>
+         </trim>
+    </insert>
+
+    <update id="updateHisRegSum" parameterType="HisRegSum">
+        update his_reg_sum
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="medicalId != null">medical_id = #{medicalId},</if>
+            <if test="regSumJson != null">reg_sum_json = #{regSumJson},</if>
+        </trim>
+        where reg_sum_id = #{regSumId}
+    </update>
+
+    <delete id="deleteHisRegSumById" parameterType="Long">
+        delete from his_reg_sum where reg_sum_id = #{regSumId}
+    </delete>
+
+    <delete id="deleteHisRegSumByIds" parameterType="String">
+        delete from his_reg_sum where reg_sum_id in 
+        <foreach item="regSumId" collection="array" open="(" separator="," close=")">
+            #{regSumId}
+        </foreach>
+    </delete>
+</mapper>

@@ -53,4 +53,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="appointmentTime != null "> and datediff(appointment_time,#{appointmentTime})=0</if>
         </where>
     </select>
+
+<!--    这是根据条件查询预约条件的-->
+    <select id="selectAtList" resultType="com.ruoyi.project.his.domain.HisHospitalAppointment">
+        select m.medical_id,m.image,m.medical_name,m.hospital_id,m.depts_id,m.depts_minute,m
+        from his_hospital_medical as m
+        left join his_working_time as w on m.medical_id = w.medical_id
+        where Tuesday like concat('%am%') and m.hospital_id = 1 and m.depts_id = '103'
+--         select m.medical_id,m.image,m.medical_name,m.hospital_id,m.depts_id,m.depts_minute as depts_care_id
+--         from his_hospital_medical as m
+--         left join his_working_time as w on m.medical_id = w.medical_id
+--         where #{appintmentFilter.day} like concat('%',#{appintmentFilter.time},'%') and m.hospital_id = #{appintmentFilter.hospitalId} and m.depts_id = #{appintmentFilter.deptsId}
+    </select>
 </mapper>

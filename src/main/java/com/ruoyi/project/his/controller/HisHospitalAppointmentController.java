@@ -2,20 +2,15 @@ package com.ruoyi.project.his.controller;
 
 import java.util.List;
 
+import com.ruoyi.project.his.domain.AppintmentFilter;
 import com.ruoyi.project.his.domain.HisHospital;
 import com.ruoyi.project.his.domain.HisHospitalAppointment;
 import com.ruoyi.project.his.service.IHisHospitalAppointmentService;
+import org.apache.ibatis.annotations.Param;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.ruoyi.framework.aspectj.lang.annotation.Log;
 import com.ruoyi.framework.aspectj.lang.enums.BusinessType;
 import com.ruoyi.framework.web.controller.BaseController;
@@ -37,7 +32,7 @@ public class HisHospitalAppointmentController extends BaseController
     private IHisHospitalAppointmentService hisHospitalAppointmentService;
 
     /**
-     * 查询【预约信息】列表
+     * 查询【获取已经预约的预约信息】列表
      */
 //    @PreAuthorize("@ss.hasPermi('system:appointment:list')")
     @GetMapping("/list")
@@ -63,20 +58,6 @@ public class HisHospitalAppointmentController extends BaseController
     }
 
     /**
-     * 简述 这是根据医院和科室以及上班时间来查询预约信息
-     * @author 写你自己的名字一般都是英文不可以汉字
-     * @date:  21:28
-
-     * @return {@link List< T> }
-     *
-     */
-    @PostMapping("/{message}")
-    public List<T> appointmentMessage() {
-
-        return null;
-    }
-
-    /**
      * 简述 新增预约信息
      * @author 写你自己的名字一般都是英文不可以汉字
      * @date:  15:18
@@ -94,6 +75,5 @@ public class HisHospitalAppointmentController extends BaseController
         hisHospitalAppointmentService.updatedeptNum(deptsId);
         return toAjax(hisHospitalAppointmentService.insertHisHospitalAppointment(hisHospitalAppointment));
     }
-
 
 }

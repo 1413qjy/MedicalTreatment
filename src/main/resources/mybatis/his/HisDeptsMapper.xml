@@ -32,10 +32,10 @@
         </where>
     </select>
 
-    <!--    删除科室的方法-->
-    <delete id="deleteDeptsById">
-        delete from his_depts where depts_id = #{param1}
-    </delete>
+    <select id="selectHisDeptsById" parameterType="HisDepts" resultMap="HisDeptsResult">
+        <include refid="selectHisDeptsVo"/>
+        where depts_id = 101
+    </select>
 
     <!--    添加科室的方法-->
     <insert id="insertHisDepts">
@@ -76,5 +76,34 @@
         set depts_num = depts_num+1
         where depts_id = #{param1}
     </update>
+
+    <update id="updateHisDepts" parameterType="HisDepts">
+        update his_depts
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deptsName != null and deptsName != ''">depts_name = #{deptsName},</if>
+            <if test="deptsCode != null and deptsCode != ''">depts_code = #{deptsCode},</if>
+            <if test="deptsNum != null">depts_num = #{deptsNum},</if>
+            <if test="deptsLeader != null">depts_leader = #{deptsLeader},</if>
+            <if test="deptsPhone != null">depts_phone = #{deptsPhone},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="hospitalId != null">hospital_id = #{hospitalId},</if>
+        </trim>
+        where depts_id = #{deptsId}
+    </update>
+
+    <delete id="deleteHisDeptsById" parameterType="Long">
+        delete from his_depts where depts_id = #{deptsId}
+    </delete>
+
+    <delete id="deleteHisDeptsByIds" parameterType="String">
+        delete from his_depts where depts_id in
+        <foreach item="deptsId" collection="array" open="(" separator="," close=")">
+            #{deptsId}
+        </foreach>
+    </delete>
 
 </mapper>

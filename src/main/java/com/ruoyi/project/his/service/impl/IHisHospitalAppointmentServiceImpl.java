@@ -2,6 +2,7 @@ package com.ruoyi.project.his.service.impl;
 
 import java.util.List;
 
+import com.ruoyi.project.his.domain.AppintmentFilter;
 import com.ruoyi.project.his.domain.HisDepts;
 import com.ruoyi.project.his.domain.HisHospital;
 import com.ruoyi.project.his.mapper.HisDeptsMapper;
@@ -81,5 +82,7 @@ public class IHisHospitalAppointmentServiceImpl implements IHisHospitalAppointme
     public int updatedeptNum(Long deptsid) {
         return hisDeptsMapper.updateDeptsNum(deptsid);
     }
+
+
 
 }

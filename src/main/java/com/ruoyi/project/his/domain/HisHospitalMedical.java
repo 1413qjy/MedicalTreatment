@@ -28,34 +28,38 @@ public class HisHospitalMedical extends BaseEntity
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
     private String medicalAge;
 
-    /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    /** 医生职位 */
+    @Excel(name = "医生职位")
     private String medicalPost;
 
     /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "医生职位")
     private Long hospitalId;
 
     /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "医生职位")
     private Long deptsId;
 
     /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "医生职位")
     private String deptsMinute;
 
     /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "医生职位", width = 30, dateFormat = "yyyy-MM-dd")
     @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd")
     private Date inductionTime;
 
     /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "医生职位")
     private String yiling;
 
     /** 图片 */
     @Excel(name = "图片")
     private String image;
+
+    /** 是否排班 */
+    @Excel(name = "是否排班")
+    private String isWorking;
 
     public void setMedicalId(Long medicalId)
     {
@@ -147,6 +151,15 @@ public class HisHospitalMedical extends BaseEntity
     {
         return image;
     }
+    public void setIsWorking(String isWorking)
+    {
+        this.isWorking = isWorking;
+    }
+
+    public String getIsWorking()
+    {
+        return isWorking;
+    }
 
     @Override
     public String toString() {
@@ -161,6 +174,7 @@ public class HisHospitalMedical extends BaseEntity
                 .append("inductionTime", getInductionTime())
                 .append("yiling", getYiling())
                 .append("image", getImage())
+                .append("isWorking", getIsWorking())
                 .toString();
     }
 }

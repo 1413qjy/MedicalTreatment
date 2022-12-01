@@ -3,6 +3,7 @@ package com.ruoyi.project.his.service;
 import java.util.List;
 
 import com.ruoyi.project.his.controller.HisHospitalController;
+import com.ruoyi.project.his.domain.AppintmentFilter;
 import com.ruoyi.project.his.domain.HisHospital;
 import com.ruoyi.project.his.domain.HisHospitalAppointment;
 import org.apache.poi.ss.formula.functions.T;
@@ -52,5 +53,6 @@ public interface IHisHospitalAppointmentService
      *
      */
     public int updatedeptNum(Long deptsid);
+
 
 }

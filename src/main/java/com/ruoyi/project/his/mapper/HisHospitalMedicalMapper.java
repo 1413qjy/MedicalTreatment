@@ -1,8 +1,11 @@
 package com.ruoyi.project.his.mapper;
 
 
+import com.ruoyi.project.his.domain.AppintmentFilter;
+import com.ruoyi.project.his.domain.HisHospitalAppointment;
 import com.ruoyi.project.his.domain.HisHospitalMedical;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -30,4 +33,18 @@ public interface HisHospitalMedicalMapper
      * @return 结果
      */
     public int insertHisHospitalMedical(HisHospitalMedical hisHospitalMedical);
+
+    public List<HisHospitalMedical> selectAtList(@Param("appintmentFilter") AppintmentFilter appintmentFilter);
+
+    public HisHospitalMedical selectHisHospitalMedicalById(Long medicalId);
+
+    public int updateHisHospitalMedical(HisHospitalMedical hisHospitalMedical);
+
+    public int deleteHisHospitalMedicalById(Long medicalId);
+
+    public int deleteHisHospitalMedicalByIds(Long[] medicalIds);
+
+    public List<HisHospitalMedical> selectHisHospitalMedicaWorkinglList(HisHospitalMedical hisHospitalMedical);
+
+    public int updateMedicalIsWorking(Long medicalId);
 }

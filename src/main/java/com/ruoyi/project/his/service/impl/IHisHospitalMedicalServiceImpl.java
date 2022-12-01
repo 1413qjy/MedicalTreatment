@@ -2,6 +2,8 @@ package com.ruoyi.project.his.service.impl;
 
 import java.util.List;
 
+import com.ruoyi.project.his.domain.AppintmentFilter;
+import com.ruoyi.project.his.domain.HisHospitalAppointment;
 import com.ruoyi.project.his.domain.HisHospitalMedical;
 import com.ruoyi.project.his.domain.HisPost;
 import com.ruoyi.project.his.mapper.HisHospitalMedicalMapper;
@@ -54,4 +56,42 @@ public class IHisHospitalMedicalServiceImpl implements IHisHospitalMedicalServic
         return hisHospitalMedicalMapper.insertHisHospitalMedical(hisHospitalMedical);
     }
 
+    @Override
+    public List<HisHospitalMedical> selectAtList(AppintmentFilter appintmentFilter) {
+        return hisHospitalMedicalMapper.selectAtList(appintmentFilter);
+    }
+
+    @Override
+    public HisHospitalMedical selectHisHospitalMedicalById(Long medicalId)
+    {
+        return hisHospitalMedicalMapper.selectHisHospitalMedicalById(medicalId);
+    }
+
+    @Override
+    public int updateHisHospitalMedical(HisHospitalMedical hisHospitalMedical)
+    {
+        return hisHospitalMedicalMapper.updateHisHospitalMedical(hisHospitalMedical);
+    }
+
+    @Override
+    public int deleteHisHospitalMedicalByIds(Long[] medicalIds)
+    {
+        return hisHospitalMedicalMapper.deleteHisHospitalMedicalByIds(medicalIds);
+    }
+
+    @Override
+    public int deleteHisHospitalMedicalById(Long medicalId)
+    {
+        return hisHospitalMedicalMapper.deleteHisHospitalMedicalById(medicalId);
+    }
+
+    @Override
+    public List<HisHospitalMedical> selectHisHospitalMedicalWorkingList(HisHospitalMedical hisHospitalMedical) {
+        return hisHospitalMedicalMapper.selectHisHospitalMedicaWorkinglList(hisHospitalMedical);
+    }
+
+    @Override
+    public int updateMedicalIsWorking(Long medicalId) {
+        return hisHospitalMedicalMapper.updateMedicalIsWorking(medicalId);
+    }
 }

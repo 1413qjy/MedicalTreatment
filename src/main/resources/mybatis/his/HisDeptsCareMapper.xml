@@ -15,6 +15,21 @@
         select depts_care_id, depts_id, depts_name, depts_sum from his_depts_care
     </sql>
 
+    <insert id="insertHisDeptsCare" parameterType="HisDeptsCare" useGeneratedKeys="true" keyProperty="deptsCareId">
+        insert into his_depts_care
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deptsId != null">depts_id,</if>
+            <if test="deptsName != null">depts_name,</if>
+            <if test="deptsSum != null">depts_sum,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deptsId != null">#{deptsId},</if>
+            <if test="deptsName != null">#{deptsName},</if>
+            <if test="deptsSum != null">#{deptsSum},</if>
+        </trim>
+    </insert>
+
+
     <select id="selectHisDeptsCareList" parameterType="HisDeptsCare" resultMap="HisDeptsCareResult">
         <include refid="selectHisDeptsCareVo"/>
         <where>

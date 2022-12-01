@@ -26,12 +26,7 @@ public class HisDeptsController extends BaseController {
     private IHisDeptsService hisDeptsService;
 
     /**
-     * 简述 这是查询科室列表的方法
-     * @author 写你自己的名字一般都是英文不可以汉字
-     * @date:  16:27
-     * @param hisDepts
-     * @return {@link TableDataInfo }
-     *
+     * 查询【这是查询科室列表的方法】
      */
 //    @PreAuthorize("@ss.hasPermi('his:depts:list')")
     @GetMapping("/list")
@@ -41,13 +36,19 @@ public class HisDeptsController extends BaseController {
         return getDataTable(list);
     }
 
+
     /**
-     * 简述 这是根据Id查询科室详细信息的方法
-     * @author 写你自己的名字一般都是英文不可以汉字
-     * @date:  14:28
-     * @param deptsId
-     * @return {@link TableDataInfo }
-     *
+     * 获取【通过id查询要修改科室的信息】详细信息
+     */
+//    @PreAuthorize("@ss.hasPermi('his:depts:query')")
+    @GetMapping("/deptsId{deptsId}")
+    public AjaxResult getInfo(@PathVariable(value = "deptsId") Long deptsId)
+    {
+        return AjaxResult.success(hisDeptsService.selectHisDeptsById(deptsId));
+    }
+
+    /**
+     * 查询【这是根据Id查询科室详细信息的方法】
      */
 //    @PreAuthorize("@ss.hasPermi('his:care:query')")
     @GetMapping("/{deptsId}")
@@ -70,12 +71,7 @@ public class HisDeptsController extends BaseController {
     }
 
     /**
-     * 简述 这是新增科室的方法
-     * @author 写你自己的名字一般都是英文不可以汉字
-     * @date:  16:28
-     * @param hisDepts
-     * @return {@link AjaxResult }
-     *
+     * 新增【这是新增科室的方法】
      */
 //    @PreAuthorize("@ss.hasPermi('his:depts:add')")
     @Log(title = "【新增科室】", businessType = BusinessType.INSERT)
@@ -85,6 +81,38 @@ public class HisDeptsController extends BaseController {
         return toAjax(hisDeptsService.insertHisDepts(hisDepts));
     }
 
+
+    /**
+     * 新增【请填写功能名称】
+     */
+//    @PreAuthorize("@ss.hasPermi('his:care:add')")
+    @Log(title = "【新增详细科室】", businessType = BusinessType.INSERT)
+    @PostMapping("/care")
+    public AjaxResult addDeptsCare(@RequestBody HisDeptsCare hisDeptsCare)
+    {
+        return toAjax(hisDeptsService.insertHisDeptsCare(hisDeptsCare));
+    }
+    /**
+     * 修改【请填写功能名称】
+     */
+//    @PreAuthorize("@ss.hasPermi('his:depts:edit')")
+    @Log(title = "【修改科室】", businessType = BusinessType.UPDATE)
+    @PutMapping
+    public AjaxResult edit(@RequestBody HisDepts hisDepts)
+    {
+        return toAjax(hisDeptsService.updateHisDepts(hisDepts));
+    }
+
+    /**
+     * 删除【根据科室id删除科室】
+     */
+//    @PreAuthorize("@ss.hasPermi('his:depts:remove')")
+    @Log(title = "【删除科室】", businessType = BusinessType.DELETE)
+    @DeleteMapping("/{deptsIds}")
+    public AjaxResult remove(@PathVariable Long[] deptsIds)
+    {
+        return toAjax(hisDeptsService.deleteHisDeptsByIds(deptsIds));
+    }
     /**
      * 简述 添加科室
      * @author 写你自己的名字一般都是英文不可以汉字

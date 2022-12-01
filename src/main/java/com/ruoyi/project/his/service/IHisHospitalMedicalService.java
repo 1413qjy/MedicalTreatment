@@ -1,5 +1,7 @@
 package com.ruoyi.project.his.service;
 
+import com.ruoyi.project.his.domain.AppintmentFilter;
+import com.ruoyi.project.his.domain.HisHospitalAppointment;
 import com.ruoyi.project.his.domain.HisHospitalMedical;
 import com.ruoyi.project.his.domain.HisPost;
 
@@ -38,4 +40,17 @@ public interface IHisHospitalMedicalService
      */
     public int insertHisHospitalMedical(HisHospitalMedical hisHospitalMedical);
 
+    public List<HisHospitalMedical> selectAtList(AppintmentFilter appintmentFilter);
+
+    public HisHospitalMedical selectHisHospitalMedicalById(Long medicalId);
+
+    public int updateHisHospitalMedical(HisHospitalMedical hisHospitalMedical);
+
+    public int deleteHisHospitalMedicalByIds(Long[] medicalIds);
+
+    public int deleteHisHospitalMedicalById(Long medicalId);
+
+    public List<HisHospitalMedical> selectHisHospitalMedicalWorkingList(HisHospitalMedical hisHospitalMedical);
+
+    public int updateMedicalIsWorking(Long medicalId);
 }

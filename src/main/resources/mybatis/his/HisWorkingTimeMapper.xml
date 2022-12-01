@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.his.mapper.HisWorkingTimeMapper">
+    
+    <resultMap type="HisWorkingTime" id="HisWorkingTimeResult">
+        <result property="hisWtId"    column="his_wt_id"    />
+        <result property="medicalId"    column="medical_id"    />
+        <result property="monday"    column="Monday"    />
+        <result property="tuesday"    column="Tuesday"    />
+        <result property="wednesday"    column="Wednesday"    />
+        <result property="thursday"    column="Thursday"    />
+        <result property="friday"    column="Friday"    />
+        <result property="saturday"    column="Saturday"    />
+        <result property="sunday"    column="Sunday"    />
+        <result property="vacation"    column="vacation"    />
+    </resultMap>
+
+    <sql id="selectHisWorkingTimeVo">
+        select his_wt_id, medical_id, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday, vacation from his_working_time
+    </sql>
+
+    <select id="selectHisWorkingTimeList" parameterType="HisWorkingTime" resultMap="HisWorkingTimeResult">
+        <include refid="selectHisWorkingTimeVo"/>
+        <where>  
+            <if test="medicalId != null "> and medical_id = #{medicalId}</if>
+            <if test="monday != null  and monday != ''"> and Monday = #{monday}</if>
+            <if test="tuesday != null  and tuesday != ''"> and Tuesday = #{tuesday}</if>
+            <if test="wednesday != null  and wednesday != ''"> and Wednesday = #{wednesday}</if>
+            <if test="thursday != null  and thursday != ''"> and Thursday = #{thursday}</if>
+            <if test="friday != null  and friday != ''"> and Friday = #{friday}</if>
+            <if test="saturday != null  and saturday != ''"> and Saturday = #{saturday}</if>
+            <if test="sunday != null  and sunday != ''"> and Sunday = #{sunday}</if>
+            <if test="vacation != null  and vacation != ''"> and vacation = #{vacation}</if>
+        </where>
+    </select>
+    
+    <select id="selectHisWorkingTimeById" parameterType="Long" resultMap="HisWorkingTimeResult">
+        <include refid="selectHisWorkingTimeVo"/>
+        where his_wt_id = #{hisWtId}
+    </select>
+        
+    <insert id="insertHisWorkingTime" parameterType="HisWorkingTime" useGeneratedKeys="true" keyProperty="hisWtId">
+        insert into his_working_time
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="medicalId != null">medical_id,</if>
+            <if test="monday != null">Monday,</if>
+            <if test="tuesday != null">Tuesday,</if>
+            <if test="wednesday != null">Wednesday,</if>
+            <if test="thursday != null">Thursday,</if>
+            <if test="friday != null">Friday,</if>
+            <if test="saturday != null">Saturday,</if>
+            <if test="sunday != null">Sunday,</if>
+            <if test="vacation != null">vacation,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="medicalId != null">#{medicalId},</if>
+            <if test="monday != null">#{monday},</if>
+            <if test="tuesday != null">#{tuesday},</if>
+            <if test="wednesday != null">#{wednesday},</if>
+            <if test="thursday != null">#{thursday},</if>
+            <if test="friday != null">#{friday},</if>
+            <if test="saturday != null">#{saturday},</if>
+            <if test="sunday != null">#{sunday},</if>
+            <if test="vacation != null">#{vacation},</if>
+         </trim>
+    </insert>
+
+    <update id="updateHisWorkingTime" parameterType="HisWorkingTime">
+        update his_working_time
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="medicalId != null">medical_id = #{medicalId},</if>
+            <if test="monday != null">Monday = #{monday},</if>
+            <if test="tuesday != null">Tuesday = #{tuesday},</if>
+            <if test="wednesday != null">Wednesday = #{wednesday},</if>
+            <if test="thursday != null">Thursday = #{thursday},</if>
+            <if test="friday != null">Friday = #{friday},</if>
+            <if test="saturday != null">Saturday = #{saturday},</if>
+            <if test="sunday != null">Sunday = #{sunday},</if>
+            <if test="vacation != null">vacation = #{vacation},</if>
+        </trim>
+        where his_wt_id = #{hisWtId}
+    </update>
+
+    <delete id="deleteHisWorkingTimeById" parameterType="Long">
+        delete from his_working_time where his_wt_id = #{hisWtId}
+    </delete>
+
+    <delete id="deleteHisWorkingTimeByIds" parameterType="String">
+        delete from his_working_time where his_wt_id in 
+        <foreach item="hisWtId" collection="array" open="(" separator="," close=")">
+            #{hisWtId}
+        </foreach>
+    </delete>
+</mapper>
