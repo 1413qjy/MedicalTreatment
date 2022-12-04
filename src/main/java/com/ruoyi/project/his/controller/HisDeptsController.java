@@ -48,13 +48,24 @@ public class HisDeptsController extends BaseController {
     }
 
     /**
-     * 查询【这是根据Id查询科室详细信息的方法】
+     * 查询【这是根据科室Id查询详细科室信息集合的方法】
      */
 //    @PreAuthorize("@ss.hasPermi('his:care:query')")
     @GetMapping("/{deptsId}")
     public TableDataInfo DeptsCareList(@PathVariable("deptsId") Long deptsId){
         startPage();
         List<HisDeptsCare> list = hisDeptsService.selectDeptsCareById(deptsId);
+        return getDataTable(list);
+    }
+
+    /**
+     * 查询【这是根据详细些科室Id查询详细科室信息的方法】
+     */
+//    @PreAuthorize("@ss.hasPermi('his:care:query')")
+    @GetMapping("/deptsCareId{deptsCareId}")
+    public TableDataInfo DeptsCareById(@PathVariable("deptsCareId") Long deptsCareId){
+        startPage();
+        List<HisDeptsCare> list = hisDeptsService.DeptsCareById(deptsCareId);
         return getDataTable(list);
     }
 
@@ -93,7 +104,7 @@ public class HisDeptsController extends BaseController {
         return toAjax(hisDeptsService.insertHisDeptsCare(hisDeptsCare));
     }
     /**
-     * 修改【请填写功能名称】
+     * 修改【科室】
      */
 //    @PreAuthorize("@ss.hasPermi('his:depts:edit')")
     @Log(title = "【修改科室】", businessType = BusinessType.UPDATE)
@@ -102,7 +113,6 @@ public class HisDeptsController extends BaseController {
     {
         return toAjax(hisDeptsService.updateHisDepts(hisDepts));
     }
-
     /**
      * 删除【根据科室id删除科室】
      */
@@ -113,29 +123,4 @@ public class HisDeptsController extends BaseController {
     {
         return toAjax(hisDeptsService.deleteHisDeptsByIds(deptsIds));
     }
-    /**
-     * 简述 添加科室
-     * @author 写你自己的名字一般都是英文不可以汉字
-     * @date:  11:17
-     * @return {@link AjaxResult }
-     *
-     */
-//    @PreAuthorize("@ss.hasPermi('system:post:add')")
-//    @Log(title = "岗位管理", businessType = BusinessType.INSERT)
-//    @PostMapping
-//    public AjaxResult add(@Validated @RequestBody HisDepts hisDepts)
-//    {
-//        if (UserConstants.NOT_UNIQUE.equals(postService.checkPostNameUnique(post)))
-//        {
-//            return AjaxResult.error("新增岗位'" + post.getPostName() + "'失败，岗位名称已存在");
-//        }
-//        else if (UserConstants.NOT_UNIQUE.equals(postService.checkPostCodeUnique(post)))
-//        {
-//            return AjaxResult.error("新增岗位'" + post.getPostName() + "'失败，岗位编码已存在");
-//        }
-//        post.setCreateBy(SecurityUtils.getUsername());
-//        return toAjax(postService.insertPost(post));
-//    }
-
-
 }

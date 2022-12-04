@@ -22,22 +22,22 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.framework.web.page.TableDataInfo;
 
 /**
- * 【请填写功能名称】Controller
+ * 【医生挂号量的操作类】Controller
  * 
  * @author ruoyi
  * @date 2022-12-01
  */
 @RestController
-@RequestMapping("/system/sum")
+@RequestMapping("/his/sum")
 public class HisRegSumController extends BaseController
 {
     @Autowired
     private IHisRegSumService hisRegSumService;
 
     /**
-     * 查询【请填写功能名称】列表
+     * 查询【医生挂号量】列表
      */
-//    @PreAuthorize("@ss.hasPermi('system:sum:list')")
+//    @PreAuthorize("@ss.hasPermi('his:sum:list')")
     @GetMapping("/list")
     public TableDataInfo list(HisRegSum hisRegSum)
     {
@@ -47,9 +47,9 @@ public class HisRegSumController extends BaseController
     }
 
     /**
-     * 导出【请填写功能名称】列表
+     * 导出【医生挂号量】列表
      */
-//    @PreAuthorize("@ss.hasPermi('system:sum:export')")
+//    @PreAuthorize("@ss.hasPermi('his:sum:export')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
     public AjaxResult export(HisRegSum hisRegSum)
@@ -60,9 +60,9 @@ public class HisRegSumController extends BaseController
     }
 
     /**
-     * 获取【请填写功能名称】详细信息
+     * 获取【某个医生挂号量】详细信息
      */
-//    @PreAuthorize("@ss.hasPermi('system:sum:query')")
+//    @PreAuthorize("@ss.hasPermi('his:sum:query')")
     @GetMapping(value = "/{regSumId}")
     public AjaxResult getInfo(@PathVariable("regSumId") Long regSumId)
     {
@@ -70,10 +70,10 @@ public class HisRegSumController extends BaseController
     }
 
     /**
-     * 新增【请填写功能名称】
+     * 新增【医生挂号量信息(Json格式的信息)】
      */
-//    @PreAuthorize("@ss.hasPermi('system:sum:add')")
-    @Log(title = "【请填写功能名称】", businessType = BusinessType.INSERT)
+//    @PreAuthorize("@ss.hasPermi('his:sum:add')")
+    @Log(title = "【医生挂号量信息(Json格式的信息)】", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody HisRegSum hisRegSum)
     {
@@ -81,10 +81,10 @@ public class HisRegSumController extends BaseController
     }
 
     /**
-     * 修改【请填写功能名称】
+     * 修改【医生挂号量信息(Json格式的信息)】
      */
 //    @PreAuthorize("@ss.hasPermi('system:sum:edit')")
-    @Log(title = "【请填写功能名称】", businessType = BusinessType.UPDATE)
+    @Log(title = "【医生挂号量信息(Json格式的信息)】", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody HisRegSum hisRegSum)
     {
@@ -92,10 +92,10 @@ public class HisRegSumController extends BaseController
     }
 
     /**
-     * 删除【请填写功能名称】
+     * 删除【医生挂号量的信息】
      */
 //    @PreAuthorize("@ss.hasPermi('system:sum:remove')")
-    @Log(title = "【请填写功能名称】", businessType = BusinessType.DELETE)
+    @Log(title = "【医生挂号量信息(Json格式的信息)】", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{regSumIds}")
     public AjaxResult remove(@PathVariable Long[] regSumIds)
     {

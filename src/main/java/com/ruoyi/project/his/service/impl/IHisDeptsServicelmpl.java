@@ -40,6 +40,11 @@ public class IHisDeptsServicelmpl implements IHisDeptsService {
     }
 
     @Override
+    public List<HisDeptsCare> DeptsCareById(Long deptsCareId) {
+        return hisDeptsCareMapper.DeptsCareById(deptsCareId);
+    }
+
+    @Override
     public List<HisDeptsCare> selectHisDeptsCareList(HisDeptsCare hisDeptsCare) {
         return hisDeptsCareMapper.selectHisDeptsCareList(hisDeptsCare);
     }
@@ -64,6 +69,11 @@ public class IHisDeptsServicelmpl implements IHisDeptsService {
     public int insertHisDeptsCare(HisDeptsCare hisDeptsCare)
     {
         return hisDeptsCareMapper.insertHisDeptsCare(hisDeptsCare);
+    }
+
+    @Override
+    public int updateHisDeptsCare(HisDeptsCare hisDeptsCare) {
+        return hisDeptsCareMapper.updateHisDeptsCare(hisDeptsCare);
     }
 
 }

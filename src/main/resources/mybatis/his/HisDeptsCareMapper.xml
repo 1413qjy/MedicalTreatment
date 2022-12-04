@@ -20,7 +20,7 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="deptsId != null">depts_id,</if>
             <if test="deptsName != null">depts_name,</if>
-            <if test="deptsSum != null">depts_sum,</if>
+            <if test="deptsSum != null">depts_sum,</if>.0..
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="deptsId != null">#{deptsId},</if>
@@ -28,6 +28,16 @@
             <if test="deptsSum != null">#{deptsSum},</if>
         </trim>
     </insert>
+
+    <update id="updateHisDeptsCare" parameterType="HisDeptsCare">
+        update his_depts_care
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deptsId != null">depts_id = #{deptsId},</if>
+            <if test="deptsName != null">depts_name = #{deptsName},</if>
+            <if test="deptsSum != null">depts_sum = #{deptsSum},</if>
+        </trim>
+        where depts_care_id = #{deptsCareId}
+    </update>
 
 
     <select id="selectHisDeptsCareList" parameterType="HisDeptsCare" resultMap="HisDeptsCareResult">
@@ -43,6 +53,13 @@
         <include refid="selectHisDeptsCareVo"/>
         <where>
             <if test="deptsId != null "> and depts_id = #{deptsId}</if>
+        </where>
+    </select>
+
+    <select id="DeptsCareById"  parameterType="Long" resultMap="HisDeptsCareResult">
+        <include refid="selectHisDeptsCareVo"/>
+        <where>
+            <if test="deptsCareId != null "> and depts_care_id = #{deptsCareId}</if>
         </where>
     </select>
 </mapper>

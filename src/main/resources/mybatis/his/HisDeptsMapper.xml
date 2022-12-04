@@ -34,7 +34,7 @@
 
     <select id="selectHisDeptsById" parameterType="HisDepts" resultMap="HisDeptsResult">
         <include refid="selectHisDeptsVo"/>
-        where depts_id = 101
+        where depts_id = #{deptsId}
     </select>
 
     <!--    添加科室的方法-->

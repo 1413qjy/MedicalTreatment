@@ -13,4 +13,8 @@ public interface HisDeptsCareMapper {
     public List<HisDeptsCare> selectHisDeptsCareById(Long deptsId);
 
     public int insertHisDeptsCare(HisDeptsCare hisDeptsCare);
+
+    public List<HisDeptsCare> DeptsCareById(Long deptsCareId);
+
+    public int updateHisDeptsCare(HisDeptsCare hisDeptsCare);
 }

@@ -225,6 +225,13 @@
 			<version>${velocity.version}</version>
 		</dependency>
 
+		<!--websocket自动向前端发送数据 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
+			<version>2.1.0.RELEASE</version>
+		</dependency>
+
 		<!--minio-->
 		<dependency>
 			<groupId>io.minio</groupId>

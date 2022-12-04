@@ -1,11 +1,14 @@
 package com.ruoyi.project.his.controller;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ruoyi.framework.aspectj.lang.enums.BusinessType;
 import com.ruoyi.project.his.domain.*;
+import com.ruoyi.project.his.entity.MedicalIdItem;
 import com.ruoyi.project.his.service.IHisHospitalMedicalService;
 import com.ruoyi.project.his.service.IHisRegSumService;
 //import com.ruoyi.project.his.utils.JsonConvertUtilS;
@@ -22,6 +25,9 @@ import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.framework.aspectj.lang.annotation.Log;
 import com.ruoyi.framework.web.page.TableDataInfo;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.Valid;
+import javax.websocket.server.ServerEndpoint;
 
 /**
  * 【请填写功能名称】Controller
@@ -44,8 +50,8 @@ public class HisHospitalMedicalController extends BaseController
     private String bucketName;
     @Autowired
     private IHisRegSumService hisRegSumService;
-//    @Autowired
-//    private JsonConvertUtilS jsonConvertUtilS;
+    @Autowired
+    private MedicalIdItem medicalIdItem;
 
     /**
      * 查询【医生】列表
@@ -135,10 +141,20 @@ public class HisHospitalMedicalController extends BaseController
      */
     @Log(title = "根据条件查询预约", businessType = BusinessType.OTHER)
     @PostMapping("/at")
-    public TableDataInfo selectAppointment(@RequestBody AppintmentFilter appintmentFilter) {
-        System.out.println(appintmentFilter);
+    public TableDataInfo selectAppointment(@RequestBody AppintmentFilter appintmentFilter) throws IOException {
         startPage();
         List<HisHospitalMedical> hislist = hisHospitalMedicalService.selectAtList(appintmentFilter);
+//        通过筛选的预约信息来查询预约医生的可挂号量
+        String day = (String) appintmentFilter.getDay();
+        String time = appintmentFilter.getTime();
+        String json = "$"+"."+day;
+        System.out.println(json);
+        for (int i=0; i<hislist.size();i++){
+            Long id = hislist.get(i).getMedicalId();
+            HisRegSum hisRegSum = hisRegSumService.selectHisRegSumById(hislist.get(i).getMedicalId(),json);
+            String regSumJson = hisRegSum.getRegSumJson();
+            WebSocketController.sendInfo(regSumJson);
+        }
         return getDataTable(hislist);
     }
 

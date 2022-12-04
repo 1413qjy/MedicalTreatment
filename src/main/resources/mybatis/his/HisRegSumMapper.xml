@@ -24,9 +24,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="selectHisRegSumById" parameterType="Long" resultMap="HisRegSumResult">
         <include refid="selectHisRegSumVo"/>
-        where reg_sum_id = #{regSumId}
+        where medical_id = #{medicalId}
     </select>
-        
+
+    <select id="selectHisRegSumByIdByday" parameterType="HisRegSum" resultMap="HisRegSumResult">
+        select reg_sum_id,medical_id,json_extract(reg_sum_json,#{json}) as reg_sum_json
+        from his_reg_sum
+        where medical_id = #{medicalId}
+    </select>
+
     <insert id="insertHisRegSum" parameterType="HisRegSum" useGeneratedKeys="true" keyProperty="regSumId">
         insert into his_reg_sum
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -45,7 +51,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="medicalId != null">medical_id = #{medicalId},</if>
             <if test="regSumJson != null">reg_sum_json = #{regSumJson},</if>
         </trim>
-        where reg_sum_id = #{regSumId}
+        where medical_id = #{medicalId}
     </update>
 
     <delete id="deleteHisRegSumById" parameterType="Long">

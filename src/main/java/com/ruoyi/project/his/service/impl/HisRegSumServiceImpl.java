@@ -22,10 +22,10 @@ public class HisRegSumServiceImpl implements IHisRegSumService
     private HisRegSumMapper hisRegSumMapper;
 
     /**
-     * 查询【请填写功能名称】
+     * 查询【医生挂号量】
      * 
-     * @param regSumId 【请填写功能名称】ID
-     * @return 【请填写功能名称】
+     * @param regSumId 【医生挂号量】ID
+     * @return 【医生挂号量】
      */
     @Override
     public HisRegSum selectHisRegSumById(Long regSumId)
@@ -33,8 +33,14 @@ public class HisRegSumServiceImpl implements IHisRegSumService
         return hisRegSumMapper.selectHisRegSumById(regSumId);
     }
 
+    @Override
+    public HisRegSum selectHisRegSumById(Long medicalId,String json)
+    {
+        return hisRegSumMapper.selectHisRegSumByIdByday(medicalId,json);
+    }
+
     /**
-     * 查询【请填写功能名称】列表
+     * 查询【医生挂号量】列表
      * 
      * @param hisRegSum 【请填写功能名称】
      * @return 【请填写功能名称】
@@ -46,7 +52,7 @@ public class HisRegSumServiceImpl implements IHisRegSumService
     }
 
     /**
-     * 新增【请填写功能名称】
+     * 新增【医生挂号量】
      * 
      * @param hisRegSum 【请填写功能名称】
      * @return 结果
@@ -58,9 +64,9 @@ public class HisRegSumServiceImpl implements IHisRegSumService
     }
 
     /**
-     * 修改【请填写功能名称】
+     * 修改【医生挂号量】
      * 
-     * @param hisRegSum 【请填写功能名称】
+     * @param hisRegSum 【医生挂号量】
      * @return 结果
      */
     @Override
@@ -70,9 +76,9 @@ public class HisRegSumServiceImpl implements IHisRegSumService
     }
 
     /**
-     * 批量删除【请填写功能名称】
+     * 批量删除【医生挂号量】
      * 
-     * @param regSumIds 需要删除的【请填写功能名称】ID
+     * @param regSumIds 需要删除的【医生挂号量】ID
      * @return 结果
      */
     @Override
@@ -82,9 +88,9 @@ public class HisRegSumServiceImpl implements IHisRegSumService
     }
 
     /**
-     * 删除【请填写功能名称】信息
+     * 删除【医生挂号量】信息
      * 
-     * @param regSumId 【请填写功能名称】ID
+     * @param regSumId 【医生挂号量】ID
      * @return 结果
      */
     @Override

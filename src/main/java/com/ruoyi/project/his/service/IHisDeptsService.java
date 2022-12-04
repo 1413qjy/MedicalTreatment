@@ -16,6 +16,8 @@ public interface IHisDeptsService {
 
     List<HisDeptsCare> selectDeptsCareById(Long deptsId);
 
+    List<HisDeptsCare> DeptsCareById(Long deptsCareId);
+
     List<HisDeptsCare> selectHisDeptsCareList(HisDeptsCare hisDeptsCare);
 
     int updateHisDepts(HisDepts hisDepts);
@@ -25,4 +27,6 @@ public interface IHisDeptsService {
     int deleteHisDeptsById(Long deptsId);
 
     int insertHisDeptsCare(HisDeptsCare hisDeptsCare);
+
+    int updateHisDeptsCare(HisDeptsCare hisDeptsCare);
 }
