@@ -21,4 +21,9 @@
             <if test="postSum != null  and postSum != ''"> and post_sum = #{postSum}</if>
         </where>
     </select>
+
+    <select id="selectHisPostById" parameterType="Long" resultMap="HisPostResult">
+        <include refid="selectHisPostVo"/>
+        where post_id = #{postId}
+    </select>
 </mapper>

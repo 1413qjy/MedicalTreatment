@@ -47,6 +47,8 @@ public interface HisRegSumMapper
      */
     public int updateHisRegSum(HisRegSum hisRegSum);
 
+    public int updateHisRegSumVersion(Long remain,Long version,Long vueVersion,Long medicalId,String condition1,String condition2);
+
     /**
      * 删除【医生挂号量】
      * 

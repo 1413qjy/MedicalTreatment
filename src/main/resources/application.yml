@@ -78,6 +78,18 @@ spring:
         max-active: 8
         # #连接池最大阻塞等待时间（使用负值表示没有限制）
         max-wait: -1ms
+  #SpringTask配置
+  task:
+    scheduling:
+      pool:
+        size: 10
+      thread-name-prefix: hanhan
+    execution:
+      shutdown:
+        #        线程关闭时是否等所有任务结束
+        await-termination: false
+        #        线程最大的等待时间，防止线程陷入循环关不掉
+        await-termination-period: 10s
 
 minio:
   endpoint: http://101.33.208.24:9000

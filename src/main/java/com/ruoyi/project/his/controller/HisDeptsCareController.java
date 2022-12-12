@@ -7,10 +7,8 @@ import com.ruoyi.framework.web.domain.AjaxResult;
 import com.ruoyi.project.his.domain.HisDeptsCare;
 import com.ruoyi.project.his.service.IHisDeptsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/his/deptsCare")
@@ -29,4 +27,26 @@ public class HisDeptsCareController extends BaseController {
     {
         return toAjax(hisDeptsService.updateHisDeptsCare(hisDeptsCare));
     }
+
+    /**
+     * 获取【某个详细科室】详细信息
+     */
+//    @PreAuthorize("@ss.hasPermi('his:care:query')")
+    @GetMapping(value = "/{deptsCareId}")
+    public AjaxResult getInfo(@PathVariable("deptsCareId") Long deptsCareId)
+    {
+        return AjaxResult.success(hisDeptsService.HisDeptsCareById(deptsCareId));
+    }
+
+    /**
+     * 删除【某个详细科室】
+     */
+//    @PreAuthorize("@ss.hasPermi('system:care:remove')")
+    @Log(title = "【请填写功能名称】", businessType = BusinessType.DELETE)
+    @DeleteMapping("/{deptsCareIds}")
+    public AjaxResult remove(@PathVariable Long[] deptsCareIds)
+    {
+        return toAjax(hisDeptsService.deleteHisDeptsCareByIds(deptsCareIds));
+    }
+
 }

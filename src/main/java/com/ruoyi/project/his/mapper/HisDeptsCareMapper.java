@@ -17,4 +17,15 @@ public interface HisDeptsCareMapper {
     public List<HisDeptsCare> DeptsCareById(Long deptsCareId);
 
     public int updateHisDeptsCare(HisDeptsCare hisDeptsCare);
+
+    public HisDeptsCare HisDeptsCareById(Long deptsCareId);
+    /**
+     * 删除【详细科室】
+     */
+    public int deleteHisDeptsCareById(Long deptsCareId);
+
+    /**
+     * 批量删除【详细科室】
+     */
+    public int deleteHisDeptsCareByIds(Long[] deptsCareIds);
 }

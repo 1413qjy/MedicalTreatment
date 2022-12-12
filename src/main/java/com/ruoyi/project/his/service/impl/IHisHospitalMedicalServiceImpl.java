@@ -94,4 +94,9 @@ public class IHisHospitalMedicalServiceImpl implements IHisHospitalMedicalServic
     public int updateMedicalIsWorking(Long medicalId) {
         return hisHospitalMedicalMapper.updateMedicalIsWorking(medicalId);
     }
+
+    @Override
+    public HisPost selectHisPostById(Long postId) {
+        return hisPostMapper.selectHisPostById(postId);
+    }
 }

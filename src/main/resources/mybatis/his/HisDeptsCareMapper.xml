@@ -20,7 +20,7 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="deptsId != null">depts_id,</if>
             <if test="deptsName != null">depts_name,</if>
-            <if test="deptsSum != null">depts_sum,</if>.0..
+            <if test="deptsSum != null">depts_sum,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="deptsId != null">#{deptsId},</if>
@@ -62,4 +62,19 @@
             <if test="deptsCareId != null "> and depts_care_id = #{deptsCareId}</if>
         </where>
     </select>
+    <select id="HisDeptsCareById" parameterType="Long" resultMap="HisDeptsCareResult">
+        <include refid="selectHisDeptsCareVo"/>
+        where depts_care_id = #{deptsCareId}
+    </select>
+
+    <delete id="deleteHisDeptsCareById" parameterType="Long">
+        delete from his_depts_care where depts_care_id = #{deptsCareId}
+    </delete>
+
+    <delete id="deleteHisDeptsCareByIds" parameterType="String">
+        delete from his_depts_care where depts_care_id in
+        <foreach item="deptsCareId" collection="array" open="(" separator="," close=")">
+            #{deptsCareId}
+        </foreach>
+    </delete>
 </mapper>

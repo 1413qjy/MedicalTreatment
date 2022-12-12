@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.his.mapper.HisRecordMapper">
+    
+    <resultMap type="HisRecord" id="HisRecordResult">
+        <result property="recordId"    column="record_id"    />
+        <result property="name"    column="name"    />
+        <result property="age"    column="age"    />
+        <result property="sex"    column="sex"    />
+        <result property="phone"    column="phone"    />
+        <result property="idNumber"    column="id_number"    />
+        <result property="deptsCareId"    column="depts_care_id"    />
+        <result property="yudiagnose"    column="yudiagnose"    />
+        <result property="diagnose"    column="diagnose"    />
+        <result property="examine"    column="examine"    />
+        <result property="drug"    column="drug"    />
+        <result property="userId"    column="user_id"    />
+    </resultMap>
+
+    <sql id="selectHisRecordVo">
+        select record_id, name, age, sex, phone, id_number, depts_care_id, yudiagnose, diagnose, examine, drug, user_id from his_record
+    </sql>
+
+    <select id="selectHisRecordList" parameterType="HisRecord" resultMap="HisRecordResult">
+        <include refid="selectHisRecordVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="age != null  and age != ''"> and age = #{age}</if>
+            <if test="sex != null  and sex != ''"> and sex = #{sex}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="idNumber != null  and idNumber != ''"> and id_number = #{idNumber}</if>
+            <if test="deptsCareId != null "> and depts_care_id = #{deptsCareId}</if>
+            <if test="yudiagnose != null  and yudiagnose != ''"> and yudiagnose = #{yudiagnose}</if>
+            <if test="diagnose != null  and diagnose != ''"> and diagnose = #{diagnose}</if>
+            <if test="examine != null  and examine != ''"> and examine = #{examine}</if>
+            <if test="drug != null  and drug != ''"> and drug = #{drug}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+        </where>
+    </select>
+    
+    <select id="selectHisRecordById" parameterType="Long" resultMap="HisRecordResult">
+        <include refid="selectHisRecordVo"/>
+        where record_id = #{recordId}
+    </select>
+        
+    <insert id="insertHisRecord" parameterType="HisRecord" useGeneratedKeys="true" keyProperty="recordId">
+        insert into his_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="age != null">age,</if>
+            <if test="sex != null">sex,</if>
+            <if test="phone != null">phone,</if>
+            <if test="idNumber != null">id_number,</if>
+            <if test="deptsCareId != null">depts_care_id,</if>
+            <if test="yudiagnose != null">yudiagnose,</if>
+            <if test="diagnose != null">diagnose,</if>
+            <if test="examine != null">examine,</if>
+            <if test="drug != null">drug,</if>
+            <if test="userId != null">user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="age != null">#{age},</if>
+            <if test="sex != null">#{sex},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="idNumber != null">#{idNumber},</if>
+            <if test="deptsCareId != null">#{deptsCareId},</if>
+            <if test="yudiagnose != null">#{yudiagnose},</if>
+            <if test="diagnose != null">#{diagnose},</if>
+            <if test="examine != null">#{examine},</if>
+            <if test="drug != null">#{drug},</if>
+            <if test="userId != null">#{userId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateHisRecord" parameterType="HisRecord">
+        update his_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="sex != null">sex = #{sex},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="idNumber != null">id_number = #{idNumber},</if>
+            <if test="deptsCareId != null">depts_care_id = #{deptsCareId},</if>
+            <if test="yudiagnose != null">yudiagnose = #{yudiagnose},</if>
+            <if test="diagnose != null">diagnose = #{diagnose},</if>
+            <if test="examine != null">examine = #{examine},</if>
+            <if test="drug != null">drug = #{drug},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+        </trim>
+        where record_id = #{recordId}
+    </update>
+
+    <delete id="deleteHisRecordById" parameterType="Long">
+        delete from his_record where record_id = #{recordId}
+    </delete>
+
+    <delete id="deleteHisRecordByIds" parameterType="String">
+        delete from his_record where record_id in 
+        <foreach item="recordId" collection="array" open="(" separator="," close=")">
+            #{recordId}
+        </foreach>
+    </delete>
+</mapper>

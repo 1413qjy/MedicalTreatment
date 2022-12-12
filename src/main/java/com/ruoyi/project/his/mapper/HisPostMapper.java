@@ -15,4 +15,6 @@ public interface HisPostMapper {
      * @return 【请填写功能名称】集合
      */
     public List<HisPost> selectHisPostList(HisPost hisPost);
+
+    public HisPost selectHisPostById(Long postId);
 }

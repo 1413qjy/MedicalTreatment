@@ -6,17 +6,21 @@ import org.apache.poi.ss.formula.functions.T;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.websocket.*;
+import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * websocket服务器
  */
-@ServerEndpoint(value = "/websocket")
+@ServerEndpoint(value = "/websocket/{userId}")
 @Component
 public class WebSocketController {
     private final static Logger log = LoggerFactory.getLogger(WebSocketController.class);
@@ -24,7 +28,7 @@ public class WebSocketController {
     //静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。
     private static int onlineCount = 0;
     //concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象。
-    private static CopyOnWriteArraySet<WebSocketController> webSocketSet = new CopyOnWriteArraySet<WebSocketController>();
+    private static Map<String,Session> webSocketSet = new HashMap();
 
     //与某个客户端的连接会话，需要通过它来给客户端发送数据
     private Session session;
@@ -33,13 +37,12 @@ public class WebSocketController {
      * 连接建立成功调用的方法
      */
     @OnOpen
-    public void onOpen(Session session) {
+    public void onOpen(@PathParam("userId") String userId, Session session) {
         this.session = session;
         //加入set中
-        webSocketSet.add(this);
+        webSocketSet.put(userId,session);
         //在线数加1
-        addOnlineCount();
-        log.info("有新连接加入！当前在线人数为" + getOnlineCount());
+        log.info("有新连接加入！当前在线人数为" +webSocketSet.size());
     }
 
     /**
@@ -51,7 +54,7 @@ public class WebSocketController {
         webSocketSet.remove(this);
         //在线数减1
         subOnlineCount();
-        log.info("有一连接关闭！当前在线人数为" + getOnlineCount());
+        log.info("有一连接关闭！当前在线人数为" + webSocketSet.size());
     }
 
     /**
@@ -62,15 +65,9 @@ public class WebSocketController {
     @OnMessage
     public void onMessage(String message, Session session) {
         log.info("来自客户端的消息:" + message);
-
+        System.out.println(session);
         //群发消息
-        for (WebSocketController item : webSocketSet) {
-            try {
-                item.sendMessage(message);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+
     }
 
     /**
@@ -90,15 +87,12 @@ public class WebSocketController {
     /**
      * 群发自定义消息
      */
-    public static void sendInfo(String regSumJson) throws IOException {
-        log.info(regSumJson);
-        for (WebSocketController item : webSocketSet) {
-            try {
-                item.sendMessage(regSumJson);
-            } catch (IOException e) {
-                continue;
-            }
-        }
+    public  void sendInfo(String regSumJson,String userId) throws IOException {
+       Session session= webSocketSet.get(userId);
+
+       session.getBasicRemote().sendText(regSumJson);
+
+
     }
 
     public static synchronized int getOnlineCount() {

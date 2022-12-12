@@ -116,7 +116,7 @@ public class HisWorkingTimeController extends BaseController
     }
 
     /**
-     * 删除【请填写功能名称】
+     * 删除【医生排班】
      */
 //    @PreAuthorize("@ss.hasPermi('system:time:remove')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.DELETE)
@@ -127,7 +127,7 @@ public class HisWorkingTimeController extends BaseController
     }
 
     /**
-     * 这是把am、pm转换为上下无的方法
+     * 这是把am、pm转换为上下午的方法
      * @return
      */
     @GetMapping("/dict")

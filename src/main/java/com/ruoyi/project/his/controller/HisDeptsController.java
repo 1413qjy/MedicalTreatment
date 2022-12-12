@@ -59,17 +59,6 @@ public class HisDeptsController extends BaseController {
     }
 
     /**
-     * 查询【这是根据详细些科室Id查询详细科室信息的方法】
-     */
-//    @PreAuthorize("@ss.hasPermi('his:care:query')")
-    @GetMapping("/deptsCareId{deptsCareId}")
-    public TableDataInfo DeptsCareById(@PathVariable("deptsCareId") Long deptsCareId){
-        startPage();
-        List<HisDeptsCare> list = hisDeptsService.DeptsCareById(deptsCareId);
-        return getDataTable(list);
-    }
-
-    /**
      * 查询【全部详细科室信息】列表
      */
 //    @PreAuthorize("@ss.hasPermi('his:care:list')")

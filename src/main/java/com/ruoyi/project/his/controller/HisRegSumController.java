@@ -35,41 +35,6 @@ public class HisRegSumController extends BaseController
     private IHisRegSumService hisRegSumService;
 
     /**
-     * 查询【医生挂号量】列表
-     */
-//    @PreAuthorize("@ss.hasPermi('his:sum:list')")
-    @GetMapping("/list")
-    public TableDataInfo list(HisRegSum hisRegSum)
-    {
-        startPage();
-        List<HisRegSum> list = hisRegSumService.selectHisRegSumList(hisRegSum);
-        return getDataTable(list);
-    }
-
-    /**
-     * 导出【医生挂号量】列表
-     */
-//    @PreAuthorize("@ss.hasPermi('his:sum:export')")
-    @Log(title = "【请填写功能名称】", businessType = BusinessType.EXPORT)
-    @GetMapping("/export")
-    public AjaxResult export(HisRegSum hisRegSum)
-    {
-        List<HisRegSum> list = hisRegSumService.selectHisRegSumList(hisRegSum);
-        ExcelUtil<HisRegSum> util = new ExcelUtil<HisRegSum>(HisRegSum.class);
-        return util.exportExcel(list, "sum");
-    }
-
-    /**
-     * 获取【某个医生挂号量】详细信息
-     */
-//    @PreAuthorize("@ss.hasPermi('his:sum:query')")
-    @GetMapping(value = "/{regSumId}")
-    public AjaxResult getInfo(@PathVariable("regSumId") Long regSumId)
-    {
-        return AjaxResult.success(hisRegSumService.selectHisRegSumById(regSumId));
-    }
-
-    /**
      * 新增【医生挂号量信息(Json格式的信息)】
      */
 //    @PreAuthorize("@ss.hasPermi('his:sum:add')")
@@ -91,14 +56,4 @@ public class HisRegSumController extends BaseController
         return toAjax(hisRegSumService.updateHisRegSum(hisRegSum));
     }
 
-    /**
-     * 删除【医生挂号量的信息】
-     */
-//    @PreAuthorize("@ss.hasPermi('system:sum:remove')")
-    @Log(title = "【医生挂号量信息(Json格式的信息)】", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{regSumIds}")
-    public AjaxResult remove(@PathVariable Long[] regSumIds)
-    {
-        return toAjax(hisRegSumService.deleteHisRegSumByIds(regSumIds));
-    }
 }

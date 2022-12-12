@@ -54,6 +54,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where medical_id = #{medicalId}
     </update>
 
+    <update id="updateHisRegSumVersion">
+        update his_reg_sum
+        set reg_sum_json = json_set(reg_sum_json,#{condition1},#{remain},#{condition2},#{version})
+        where medical_id = #{medicalId} and json_extract(reg_sum_json,#{condition2})=#{vueVersion}
+    </update>
+
     <delete id="deleteHisRegSumById" parameterType="Long">
         delete from his_reg_sum where reg_sum_id = #{regSumId}
     </delete>

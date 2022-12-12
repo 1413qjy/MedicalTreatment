@@ -3,6 +3,7 @@ package com.ruoyi.project.his.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -14,6 +15,7 @@ import com.ruoyi.project.his.service.IHisRegSumService;
 //import com.ruoyi.project.his.utils.JsonConvertUtilS;
 import com.ruoyi.project.his.utils.MinioUtilS;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.map.HashedMap;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,8 +40,7 @@ import javax.websocket.server.ServerEndpoint;
 @RestController
 @Slf4j
 @RequestMapping("/his/medical")
-public class HisHospitalMedicalController extends BaseController
-{
+public class HisHospitalMedicalController extends BaseController {
     @Autowired
     private IHisHospitalMedicalService hisHospitalMedicalService;
     @Autowired
@@ -52,14 +53,15 @@ public class HisHospitalMedicalController extends BaseController
     private IHisRegSumService hisRegSumService;
     @Autowired
     private MedicalIdItem medicalIdItem;
+    @Autowired
+    private WebSocketController webSocketController;
 
     /**
      * 查询【医生】列表
      */
 //    @PreAuthorize("@ss.hasPermi('system:medical:list')")
     @GetMapping("/list")
-    public TableDataInfo list(HisHospitalMedical hisHospitalMedical)
-    {
+    public TableDataInfo list(HisHospitalMedical hisHospitalMedical) {
         startPage();
         List<HisHospitalMedical> list = hisHospitalMedicalService.selectHisHospitalMedicalList(hisHospitalMedical);
         return getDataTable(list);
@@ -70,8 +72,7 @@ public class HisHospitalMedicalController extends BaseController
      */
 //    @PreAuthorize("@ss.hasPermi('his:medical:query')")
     @GetMapping(value = "/{medicalId}")
-    public AjaxResult getInfo(@PathVariable("medicalId") Long medicalId)
-    {
+    public AjaxResult getInfo(@PathVariable("medicalId") Long medicalId) {
         return AjaxResult.success(hisHospitalMedicalService.selectHisHospitalMedicalById(medicalId));
     }
 
@@ -81,8 +82,7 @@ public class HisHospitalMedicalController extends BaseController
 //    @PreAuthorize("@ss.hasPermi('system:medical:add')")
     @Log(title = "新增【医生信息】", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody HisHospitalMedical hisHospitalMedical)
-    {
+    public AjaxResult add(@RequestBody HisHospitalMedical hisHospitalMedical) {
         return toAjax(hisHospitalMedicalService.insertHisHospitalMedical(hisHospitalMedical));
     }
 
@@ -92,8 +92,7 @@ public class HisHospitalMedicalController extends BaseController
 //    @PreAuthorize("@ss.hasPermi('system:medical:edit')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody HisHospitalMedical hisHospitalMedical)
-    {
+    public AjaxResult edit(@RequestBody HisHospitalMedical hisHospitalMedical) {
         return toAjax(hisHospitalMedicalService.updateHisHospitalMedical(hisHospitalMedical));
     }
 
@@ -103,8 +102,7 @@ public class HisHospitalMedicalController extends BaseController
 //    @PreAuthorize("@ss.hasPermi('system:medical:remove')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.DELETE)
     @DeleteMapping("/{medicalIds}")
-    public AjaxResult remove(@PathVariable Long[] medicalIds)
-    {
+    public AjaxResult remove(@PathVariable Long[] medicalIds) {
         return toAjax(hisHospitalMedicalService.deleteHisHospitalMedicalByIds(medicalIds));
     }
 
@@ -113,57 +111,54 @@ public class HisHospitalMedicalController extends BaseController
      */
 //    @PreAuthorize("@ss.hasPermi('system:post:list')")
     @GetMapping("/postList")
-    public TableDataInfo postList(HisPost hisPost)
-    {
+    public TableDataInfo postList(HisPost hisPost) {
         startPage();
         List<HisPost> list = hisHospitalMedicalService.selectHisPostList(hisPost);
         return getDataTable(list);
     }
 
     /**
-     * 上传图片的方法
-     * @param file
-     * @return
+     * 获取【某个职位的详细信息】详细信息
      */
-    @PostMapping("/upload")
-    public Object upload(MultipartFile file){
-        List<String> upload = minioUtilS.upload(new MultipartFile[]{file});
-        return address+"/"+bucketName+"/"+upload.get(0);
+//    @PreAuthorize("@ss.hasPermi('his:post:query')")
+    @GetMapping(value = "/post{postId}")
+    public AjaxResult getPostInfo(@PathVariable("postId") Long postId) {
+        return AjaxResult.success(hisHospitalMedicalService.selectHisPostById(postId));
     }
 
     /**
-     * 简述 根据条件查询预约
-     * @author 写你自己的名字一般都是英文不可以汉字
-     * @date:  9:34
-     * @param appintmentFilter
-     * @return {@link List<  T > }
-     *
+     * 上传图片的方法
+     */
+    @PostMapping("/upload")
+    public Object upload(MultipartFile file) {
+        List<String> upload = minioUtilS.upload(new MultipartFile[]{file});
+        return address + "/" + bucketName + "/" + upload.get(0);
+    }
+
+    /**
+     * 简述 根据条件查询预约医生信息和相对应的上下午挂号量信息
      */
     @Log(title = "根据条件查询预约", businessType = BusinessType.OTHER)
     @PostMapping("/at")
-    public TableDataInfo selectAppointment(@RequestBody AppintmentFilter appintmentFilter) throws IOException {
+    public Map selectAppointment(@RequestBody AppintmentFilter appintmentFilter) throws IOException {
         startPage();
         List<HisHospitalMedical> hislist = hisHospitalMedicalService.selectAtList(appintmentFilter);
 //        通过筛选的预约信息来查询预约医生的可挂号量
         String day = (String) appintmentFilter.getDay();
         String time = appintmentFilter.getTime();
-        String json = "$"+"."+day;
+        String json = "$" + "." + day;
+        Map<String, Object> map = new HashedMap<>();
+        List<Object> list2 = new ArrayList<>();
+        map.put("medical", hislist);
         System.out.println(json);
-        for (int i=0; i<hislist.size();i++){
+        for (int i = 0; i < hislist.size(); i++) {
             Long id = hislist.get(i).getMedicalId();
-            HisRegSum hisRegSum = hisRegSumService.selectHisRegSumById(hislist.get(i).getMedicalId(),json);
+            HisRegSum hisRegSum = hisRegSumService.selectHisRegSumById(hislist.get(i).getMedicalId(), json);
             String regSumJson = hisRegSum.getRegSumJson();
-            WebSocketController.sendInfo(regSumJson);
+            list2.add(i, regSumJson);
         }
-        return getDataTable(hislist);
-    }
-
-//    查询医生的挂号量
-    @GetMapping("/regSumlist")
-    public TableDataInfo regSumlistlist(HisRegSum hisRegSum)
-    {
-        startPage();
-        List<HisRegSum> list = hisRegSumService.selectHisRegSumList(hisRegSum);
-        return getDataTable(list);
+        map.put("regSumJson", list2);
+//        webSocketController.sendInfo("你好，世界", String.valueOf(1));
+        return map;
     }
 }

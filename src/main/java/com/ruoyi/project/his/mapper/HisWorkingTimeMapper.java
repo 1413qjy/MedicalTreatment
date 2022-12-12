@@ -1,6 +1,7 @@
 package com.ruoyi.project.his.mapper;
 
 import com.ruoyi.project.his.domain.HisWorkingTime;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
  * @author ruoyi
  * @date 2022-11-30
  */
+@Mapper
 public interface HisWorkingTimeMapper 
 {
     /**

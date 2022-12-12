@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.his.mapper.HisIndentMapper">
+
+    <resultMap type="HisIndent" id="HisHospitalIndentResult">
+        <result property="indentId"    column="indent_id"    />
+        <result property="indentNumber"    column="indent_number"    />
+        <result property="indentTitle"    column="indent_title"    />
+        <result property="indentSum"    column="indent_sum"    />
+        <result property="indentTime"    column="indent_time"    />
+        <result property="indentMode"    column="indent_mode"    />
+        <result property="userId"    column="user_id"    />
+        <result property="indentOriginal"    column="indent_original"    />
+    </resultMap>
+
+    <sql id="selectHisHospitalIndentVo">
+        select indent_id, indent_number, indent_title, indent_sum, indent_time, indent_mode, user_id, indent_original from his_hospital_indent
+    </sql>
+
+    <select id="selectHisIndentById" parameterType="Long" resultMap="HisHospitalIndentResult">
+        select indent_id, indent_number, indent_title, indent_sum, indent_time, indent_mode, user_id, indent_original
+        from his_hospital_indent
+        where user_id = #{userId} and indent_mode = "未支付" and indent_title = "预约挂号"
+    </select>
+
+    <select id="selectHisIndentList" parameterType="HisIndent" resultMap="HisHospitalIndentResult">
+        <include refid="selectHisHospitalIndentVo"/>
+        <where>
+            <if test="indentNumber != null  and indentNumber != ''"> and indent_number = #{indentNumber}</if>
+            <if test="indentTitle != null  and indentTitle != ''"> and indent_title = #{indentTitle}</if>
+            <if test="indentSum != null  and indentSum != ''"> and indent_sum = #{indentSum}</if>
+            <if test="indentTime != null "> and date_format(indent_time, '%Y-%m-%d') = date_format(#{indentTime}, '%Y-%m-%d') </if>
+            <if test="indentMode != null  and indentMode != ''"> and indent_mode = #{indentMode}</if>
+            <if test="userId != null  and userId != ''"> and user_id = #{userId}</if>
+            <if test="indentOriginal != null  and indentOriginal != ''"> and indent_original = #{indentOriginal}</if>
+        </where>
+    </select>
+
+    <insert id="insertHisIndent" parameterType="HisIndent" useGeneratedKeys="true" keyProperty="indentId">
+        insert into his_hospital_indent
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="indentNumber != null">indent_number,</if>
+            <if test="indentTitle != null">indent_title,</if>
+            <if test="indentSum != null">indent_sum,</if>
+            <if test="indentTime != null">indent_time,</if>
+            <if test="indentMode != null and indentMode != ''">indent_mode,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="indentOriginal != null">indent_original,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="indentNumber != null">#{indentNumber},</if>
+            <if test="indentTitle != null">#{indentTitle},</if>
+            <if test="indentSum != null">#{indentSum},</if>
+            <if test="indentTime != null">#{indentTime},</if>
+            <if test="indentMode != null and indentMode != ''">#{indentMode},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="indentOriginal != null">#{indentOriginal},</if>
+        </trim>
+    </insert>
+
+    <update id="updateHisIndent" parameterType="String">
+        update his_hospital_indent
+        set indent_mode = "已支付"
+        where indent_number = #{indentNumber}
+    </update>
+
+    <delete id="deleteHisHospitalIndentById" parameterType="Long">
+        delete from his_hospital_indent where indent_id = #{indentId}
+    </delete>
+
+    <delete id="deleteHisHospitalIndentByIds" parameterType="String">
+        delete from his_hospital_indent where indent_id in
+        <foreach item="indentId" collection="array" open="(" separator="," close=")">
+            #{indentId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteOvertimeIndent">
+        delete from his_hospital_indent where now() >ADDDATE(indent_time,interval 15 minute) and indent_mode = "未支付" and indent_title = "预约挂号";
+    </delete>
+</mapper>

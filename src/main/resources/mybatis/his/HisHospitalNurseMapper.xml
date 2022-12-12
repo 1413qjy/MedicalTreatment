@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.his.mapper.HisHospitalNurseMapper">
+    
+    <resultMap type="HisHospitalNurse" id="HisHospitalNurseResult">
+        <result property="nurseId"    column="nurse_id"    />
+        <result property="nurseName"    column="nurse_name"    />
+        <result property="nurseAge"    column="nurse_age"    />
+        <result property="hospitalId"    column="hospital_id"    />
+        <result property="deptsId"    column="depts_id"    />
+        <result property="deptsMinute"    column="depts_minute"    />
+        <result property="inductionTime"    column="induction_time"    />
+        <result property="image"    column="image"    />
+        <result property="isWorking"    column="is_working"    />
+    </resultMap>
+
+    <sql id="selectHisHospitalNurseVo">
+        select nurse_id, nurse_name, nurse_age, hospital_id, depts_id, depts_minute, induction_time, image, is_working from his_hospital_nurse
+    </sql>
+
+    <select id="selectHisHospitalNurseList" parameterType="HisHospitalNurse" resultMap="HisHospitalNurseResult">
+        <include refid="selectHisHospitalNurseVo"/>
+        <where>  
+            <if test="nurseName != null  and nurseName != ''"> and nurse_name like concat('%', #{nurseName}, '%')</if>
+            <if test="nurseAge != null  and nurseAge != ''"> and nurse_age = #{nurseAge}</if>
+            <if test="hospitalId != null "> and hospital_id = #{hospitalId}</if>
+            <if test="deptsId != null "> and depts_id = #{deptsId}</if>
+            <if test="deptsMinute != null  and deptsMinute != ''"> and depts_minute = #{deptsMinute}</if>
+            <if test="inductionTime != null "> and induction_time = #{inductionTime}</if>
+            <if test="image != null  and image != ''"> and image = #{image}</if>
+            <if test="isWorking != null  and isWorking != ''"> and is_working = #{isWorking}</if>
+        </where>
+    </select>
+    
+    <select id="selectHisHospitalNurseById" parameterType="Long" resultMap="HisHospitalNurseResult">
+        <include refid="selectHisHospitalNurseVo"/>
+        where nurse_id = #{nurseId}
+    </select>
+        
+    <insert id="insertHisHospitalNurse" parameterType="HisHospitalNurse" useGeneratedKeys="true" keyProperty="nurseId">
+        insert into his_hospital_nurse
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="nurseName != null and nurseName != ''">nurse_name,</if>
+            <if test="nurseAge != null">nurse_age,</if>
+            <if test="hospitalId != null">hospital_id,</if>
+            <if test="deptsId != null">depts_id,</if>
+            <if test="deptsMinute != null">depts_minute,</if>
+            <if test="inductionTime != null">induction_time,</if>
+            <if test="image != null">image,</if>
+            <if test="isWorking != null">is_working,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="nurseName != null and nurseName != ''">#{nurseName},</if>
+            <if test="nurseAge != null">#{nurseAge},</if>
+            <if test="hospitalId != null">#{hospitalId},</if>
+            <if test="deptsId != null">#{deptsId},</if>
+            <if test="deptsMinute != null">#{deptsMinute},</if>
+            <if test="inductionTime != null">#{inductionTime},</if>
+            <if test="image != null">#{image},</if>
+            <if test="isWorking != null">#{isWorking},</if>
+         </trim>
+    </insert>
+
+    <update id="updateHisHospitalNurse" parameterType="HisHospitalNurse">
+        update his_hospital_nurse
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="nurseName != null and nurseName != ''">nurse_name = #{nurseName},</if>
+            <if test="nurseAge != null">nurse_age = #{nurseAge},</if>
+            <if test="hospitalId != null">hospital_id = #{hospitalId},</if>
+            <if test="deptsId != null">depts_id = #{deptsId},</if>
+            <if test="deptsMinute != null">depts_minute = #{deptsMinute},</if>
+            <if test="inductionTime != null">induction_time = #{inductionTime},</if>
+            <if test="image != null">image = #{image},</if>
+            <if test="isWorking != null">is_working = #{isWorking},</if>
+        </trim>
+        where nurse_id = #{nurseId}
+    </update>
+
+    <delete id="deleteHisHospitalNurseById" parameterType="Long">
+        delete from his_hospital_nurse where nurse_id = #{nurseId}
+    </delete>
+
+    <delete id="deleteHisHospitalNurseByIds" parameterType="String">
+        delete from his_hospital_nurse where nurse_id in 
+        <foreach item="nurseId" collection="array" open="(" separator="," close=")">
+            #{nurseId}
+        </foreach>
+    </delete>
+</mapper>

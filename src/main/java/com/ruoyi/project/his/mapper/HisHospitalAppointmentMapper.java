@@ -18,20 +18,28 @@ import org.apache.poi.ss.formula.functions.T;
 public interface HisHospitalAppointmentMapper 
 {
     /**
-     * 查询【请填写功能名称】列表
-     * 
-     * @param hisHospitalAppointment 【请填写功能名称】
-     * @return 【请填写功能名称】集合
+     * 查询预约信息列表
      */
     public List<HisHospitalAppointment> selectHisHospitalAppointmentList(HisHospitalAppointment hisHospitalAppointment);
 
     /**
-     * 新增【请填写功能名称】
-     *
-     * @param hisHospitalAppointment 【请填写功能名称】
-     * @return 结果
+     * 新增预约信息
      */
     public int insertHisHospitalAppointment(HisHospitalAppointment hisHospitalAppointment);
 
+    /**
+     * 修改预约信息
+     */
+    public int updateHisHospitalAppointment(HisHospitalAppointment hisHospitalAppointment);
+
+    /**
+     * 删除预约信息
+     */
+    public int deleteHisHospitalAppointmentById(Long appointmentId);
+
+    /**
+     * 批量删除预约信息
+     */
+    public int deleteHisHospitalAppointmentByIds(Long[] appointmentIds);
 
 }

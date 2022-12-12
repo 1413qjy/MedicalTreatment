@@ -3,56 +3,81 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.project.his.mapper.HisHospitalAppointmentMapper">
-    
+
     <resultMap type="HisHospitalAppointment" id="HisHospitalAppointmentResult">
         <result property="appointmentId"    column="appointment_id"    />
-        <result property="hostName"    column="host_name"    />
-        <result property="hostPhone"    column="host_phone"    />
-        <result property="petName"    column="pet_name"    />
-        <result property="petAge"    column="pet_age"    />
+        <result property="doctorName"    column="doctor_name"    />
+        <result property="doctorPhone"    column="doctor_phone"    />
+        <result property="doctorNumber"    column="doctor_number"    />
+        <result property="doctorMessage"    column="doctor_message"    />
         <result property="hospitalId"    column="hospital_id"    />
-        <result property="deptsId"    column="depts_id"    />
         <result property="appointmentTime"    column="appointment_time"    />
+        <result property="userId"    column="user_id"    />
+        <result property="indentOuttrade"    column="indent_OutTrade"    />
+        <result property="doctorDay"    column="doctor_day"    />
+        <result property="amPm"    column="am_pm"    />
+        <result property="deptsId"    column="depts_id"    />
+        <result property="deptsCareid"    column="depts_careid"    />
+        <result property="medicalPostid"    column="medical_postid"    />
+        <result property="medicalId"    column="medical_id"    />
+        <result property="age"    column="age"    />
+        <result property="sex"    column="sex"    />
     </resultMap>
 
     <sql id="selectHisHospitalAppointmentVo">
-        select appointment_id, host_name, host_phone, pet_name, pet_age, hospital_id, depts_id, appointment_time from his_hospital_appointment
+        select appointment_id, doctor_name, doctor_phone, doctor_number, doctor_message, hospital_id, appointment_time, user_id, indent_OutTrade, doctor_day, am_pm, depts_id, depts_careid, medical_postid, medical_id, age, sex from his_hospital_appointment
     </sql>
+
+    <select id="selectHisHospitalAppointmentList" parameterType="HisHospitalAppointment" resultMap="HisHospitalAppointmentResult">
+        select app.*
+        from his_hospital_appointment as app
+        left join his_hospital_indent as ind on app.indent_OutTrade = ind.indent_number
+        <where>
+            <if test="userId != null  and userId != ''">and ind.indent_mode = "已支付" and ind.user_id = #{userId}</if>
+            <if test="userId == null  and userId == ''">and ind.indent_mode = "已支付"</if>
+        </where>
+
+    </select>
 
     <insert id="insertHisHospitalAppointment" parameterType="HisHospitalAppointment" useGeneratedKeys="true" keyProperty="appointmentId">
         insert into his_hospital_appointment
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="hostName != null and hostName != ''">host_name,</if>
-            <if test="hostPhone != null and hostPhone != ''">host_phone,</if>
-            <if test="petName != null">pet_name,</if>
-            <if test="petAge != null">pet_age,</if>
+            <if test="doctorName != null and doctorName != ''">doctor_name,</if>
+            <if test="doctorPhone != null and doctorPhone != ''">doctor_phone,</if>
+            <if test="doctorNumber != null">doctor_number,</if>
+            <if test="doctorMessage != null">doctor_message,</if>
             <if test="hospitalId != null">hospital_id,</if>
-            <if test="deptsId != null">depts_id,</if>
             <if test="appointmentTime != null">appointment_time,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="indentOuttrade != null">indent_OutTrade,</if>
+            <if test="doctorDay != null">doctor_day,</if>
+            <if test="amPm != null">am_pm,</if>
+            <if test="deptsId != null">depts_id,</if>
+            <if test="deptsCareid != null">depts_careid,</if>
+            <if test="medicalPostid != null">medical_postid,</if>
+            <if test="medicalId != null">medical_id,</if>
+            <if test="age != null">age,</if>
+            <if test="sex != null">sex,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="hostName != null and hostName != ''">#{hostName},</if>
-            <if test="hostPhone != null and hostPhone != ''">#{hostPhone},</if>
-            <if test="petName != null">#{petName},</if>
-            <if test="petAge != null">#{petAge},</if>
+            <if test="doctorName != null and doctorName != ''">#{doctorName},</if>
+            <if test="doctorPhone != null and doctorPhone != ''">#{doctorPhone},</if>
+            <if test="doctorNumber != null">#{doctorNumber},</if>
+            <if test="doctorMessage != null">#{doctorMessage},</if>
             <if test="hospitalId != null">#{hospitalId},</if>
-            <if test="deptsId != null">#{deptsId},</if>
             <if test="appointmentTime != null">#{appointmentTime},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="indentOuttrade != null">#{indentOuttrade},</if>
+            <if test="doctorDay != null">#{doctorDay},</if>
+            <if test="amPm != null">#{amPm},</if>
+            <if test="deptsId != null">#{deptsId},</if>
+            <if test="deptsCareid != null">#{deptsCareid},</if>
+            <if test="medicalPostid != null">#{medicalPostid},</if>
+            <if test="medicalId != null">#{medicalId},</if>
+            <if test="age != null">#{age},</if>
+            <if test="sex != null">#{sex},</if>
         </trim>
     </insert>
-
-    <select id="selectHisHospitalAppointmentList" parameterType="HisHospitalAppointment" resultMap="HisHospitalAppointmentResult">
-        <include refid="selectHisHospitalAppointmentVo"/>
-        <where>
-            <if test="hostName != null  and hostName != ''"> and host_name like concat('%', #{hostName}, '%')</if>
-            <if test="hostPhone != null  and hostPhone != ''"> and host_phone = #{hostPhone}</if>
-            <if test="petName != null  and petName != ''"> and pet_name like concat('%', #{petName}, '%')</if>
-            <if test="petAge != null  and petAge != ''"> and pet_age = #{petAge}</if>
-            <if test="hospitalId != null "> and hospital_id = #{hospitalId}</if>
-            <if test="deptsId != null "> and depts_id = #{deptsId}</if>
-            <if test="appointmentTime != null "> and datediff(appointment_time,#{appointmentTime})=0</if>
-        </where>
-    </select>
 
 <!--    这是根据条件查询预约条件的-->
     <select id="selectAtList" resultType="com.ruoyi.project.his.domain.HisHospitalAppointment">
@@ -60,9 +85,38 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from his_hospital_medical as m
         left join his_working_time as w on m.medical_id = w.medical_id
         where Tuesday like concat('%am%') and m.hospital_id = 1 and m.depts_id = '103'
---         select m.medical_id,m.image,m.medical_name,m.hospital_id,m.depts_id,m.depts_minute as depts_care_id
---         from his_hospital_medical as m
---         left join his_working_time as w on m.medical_id = w.medical_id
---         where #{appintmentFilter.day} like concat('%',#{appintmentFilter.time},'%') and m.hospital_id = #{appintmentFilter.hospitalId} and m.depts_id = #{appintmentFilter.deptsId}
     </select>
+
+    <update id="updateHisHospitalAppointment" parameterType="HisHospitalAppointment">
+        update his_hospital_appointment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="doctorName != null and doctorName != ''">doctor_name = #{doctorName},</if>
+            <if test="doctorPhone != null and doctorPhone != ''">doctor_phone = #{doctorPhone},</if>
+            <if test="doctorNumber != null">doctor_number = #{doctorNumber},</if>
+            <if test="doctorMessage != null">doctor_message = #{doctorMessage},</if>
+            <if test="hospitalId != null">hospital_id = #{hospitalId},</if>
+            <if test="appointmentTime != null">appointment_time = #{appointmentTime},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="indentOuttrade != null">indent_OutTrade = #{indentOuttrade},</if>
+            <if test="doctorDay != null">doctor_day = #{doctorDay},</if>
+            <if test="amPm != null">am_pm = #{amPm},</if>
+            <if test="deptsId != null">depts_id = #{deptsId},</if>
+            <if test="deptsCareid != null">depts_careid = #{deptsCareid},</if>
+            <if test="medicalPostid != null">medical_postid = #{medicalPostid},</if>
+            <if test="medicalId != null">medical_id = #{medicalId},</if>
+
+        </trim>
+        where appointment_id = #{appointmentId}
+    </update>
+
+    <delete id="deleteHisHospitalAppointmentById" parameterType="Long">
+        delete from his_hospital_appointment where appointment_id = #{appointmentId}
+    </delete>
+
+    <delete id="deleteHisHospitalAppointmentByIds" parameterType="String">
+        delete from his_hospital_appointment where appointment_id in
+        <foreach item="appointmentId" collection="array" open="(" separator="," close=")">
+            #{appointmentId}
+        </foreach>
+    </delete>
 </mapper>

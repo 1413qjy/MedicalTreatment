@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.his.mapper.HisLockStockMapper">
+
+    <resultMap type="HisLockStock" id="HisLockStockResult">
+        <result property="hisLockStockid"    column="his_lock_stockid"    />
+        <result property="medicalId"    column="medical_id"    />
+        <result property="regSumJson"    column="reg_sum_json"    />
+    </resultMap>
+
+    <sql id="selectHisLockStockVo">
+        select his_lock_stockid, medical_id, reg_sum_json from his_lock_stock
+    </sql>
+
+    <select id="selectHisLockStockList" parameterType="HisLockStock" resultMap="HisLockStockResult">
+        <include refid="selectHisLockStockVo"/>
+        <where>
+            <if test="medicalId != null "> and medical_id = #{medicalId}</if>
+            <if test="regSumJson != null  and regSumJson != ''"> and reg_sum_json = #{regSumJson}</if>
+        </where>
+    </select>
+
+    <select id="selectHisLockStockById" parameterType="Long" resultMap="HisLockStockResult">
+        <include refid="selectHisLockStockVo"/>
+        where his_lock_stockid = #{hisLockStockid}
+    </select>
+
+    <select id="selectHisLockStockRegSumJson" parameterType="HisLockStock" resultMap="HisLockStockResult">
+        select  his_lock_stockid,medical_id,json_extract(reg_sum_json,#{condition}) as reg_sum_json
+        from his_lock_stock
+        where medical_id = #{medicalId}
+    </select>
+
+    <insert id="insertHisLockStock" parameterType="HisLockStock" useGeneratedKeys="true" keyProperty="hisLockStockid">
+        insert into his_lock_stock
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="medicalId != null">medical_id,</if>
+            <if test="regSumJson != null">reg_sum_json,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="medicalId != null">#{medicalId},</if>
+            <if test="regSumJson != null">#{regSumJson},</if>
+        </trim>
+    </insert>
+
+    <update id="updateHisLockStock" parameterType="HisLockStock">
+        update his_lock_stock
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="medicalId != null">medical_id = #{medicalId},</if>
+            <if test="regSumJson != null">reg_sum_json = #{regSumJson},</if>
+        </trim>
+        where his_lock_stockid = #{hisLockStockid}
+    </update>
+
+    <delete id="deleteHisLockStockById" parameterType="Long">
+        delete from his_lock_stock where his_lock_stockid = #{hisLockStockid}
+    </delete>
+
+    <delete id="deleteHisLockStockByIds" parameterType="String">
+        delete from his_lock_stock where his_lock_stockid in
+        <foreach item="hisLockStockid" collection="array" open="(" separator="," close=")">
+            #{hisLockStockid}
+        </foreach>
+    </delete>
+</mapper>

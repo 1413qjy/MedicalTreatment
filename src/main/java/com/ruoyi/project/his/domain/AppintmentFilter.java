@@ -2,7 +2,9 @@ package com.ruoyi.project.his.domain;
 
 import lombok.Data;
 
-
+/**
+ * 根据条件查询预约医生信息和相对应的上下午挂号量信息
+ */
 public class AppintmentFilter {
 
     private Long hospitalId;
@@ -50,4 +52,5 @@ public class AppintmentFilter {
     public void setAppointmentTime(String appointmentTime) {
         this.appointmentTime = appointmentTime;
     }
+
 }

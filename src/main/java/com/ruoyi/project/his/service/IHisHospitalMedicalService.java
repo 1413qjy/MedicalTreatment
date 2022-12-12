@@ -53,4 +53,6 @@ public interface IHisHospitalMedicalService
     public List<HisHospitalMedical> selectHisHospitalMedicalWorkingList(HisHospitalMedical hisHospitalMedical);
 
     public int updateMedicalIsWorking(Long medicalId);
+
+    HisPost selectHisPostById(Long postId);
 }

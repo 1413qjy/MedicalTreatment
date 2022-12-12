@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.his.mapper.HisExamineMapper">
+    
+    <resultMap type="HisExamine" id="HisExamineResult">
+        <result property="examineId"    column="examine_id"    />
+        <result property="examineName"    column="examine_name"    />
+        <result property="examineSum"    column="examine_sum"    />
+        <result property="examineMedicalId"    column="examine_medical_id"    />
+        <result property="examineTypeId"    column="examine_type_id"    />
+    </resultMap>
+
+    <sql id="selectHisExamineVo">
+        select examine_id, examine_name, examine_sum, examine_medical_id, examine_type_id from his_examine
+    </sql>
+
+    <select id="selectHisExamineList" parameterType="HisExamine" resultMap="HisExamineResult">
+        <include refid="selectHisExamineVo"/>
+        <where>  
+            <if test="examineName != null  and examineName != ''"> and examine_name like concat('%', #{examineName}, '%')</if>
+            <if test="examineSum != null  and examineSum != ''"> and examine_sum = #{examineSum}</if>
+            <if test="examineMedicalId != null "> and examine_medical_id = #{examineMedicalId}</if>
+            <if test="examineTypeId != null "> and examine_type_id = #{examineTypeId}</if>
+        </where>
+    </select>
+    
+    <select id="selectHisExamineById" parameterType="Long" resultMap="HisExamineResult">
+        <include refid="selectHisExamineVo"/>
+        where examine_id = #{examineId}
+    </select>
+        
+    <insert id="insertHisExamine" parameterType="HisExamine" useGeneratedKeys="true" keyProperty="examineId">
+        insert into his_examine
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="examineName != null">examine_name,</if>
+            <if test="examineSum != null">examine_sum,</if>
+            <if test="examineMedicalId != null">examine_medical_id,</if>
+            <if test="examineTypeId != null">examine_type_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="examineName != null">#{examineName},</if>
+            <if test="examineSum != null">#{examineSum},</if>
+            <if test="examineMedicalId != null">#{examineMedicalId},</if>
+            <if test="examineTypeId != null">#{examineTypeId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateHisExamine" parameterType="HisExamine">
+        update his_examine
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="examineName != null">examine_name = #{examineName},</if>
+            <if test="examineSum != null">examine_sum = #{examineSum},</if>
+            <if test="examineMedicalId != null">examine_medical_id = #{examineMedicalId},</if>
+            <if test="examineTypeId != null">examine_type_id = #{examineTypeId},</if>
+        </trim>
+        where examine_id = #{examineId}
+    </update>
+
+    <delete id="deleteHisExamineById" parameterType="Long">
+        delete from his_examine where examine_id = #{examineId}
+    </delete>
+
+    <delete id="deleteHisExamineByIds" parameterType="String">
+        delete from his_examine where examine_id in 
+        <foreach item="examineId" collection="array" open="(" separator="," close=")">
+            #{examineId}
+        </foreach>
+    </delete>
+</mapper>

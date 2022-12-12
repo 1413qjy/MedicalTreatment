@@ -5,7 +5,9 @@ import java.util.List;
 import com.ruoyi.project.his.domain.AppintmentFilter;
 import com.ruoyi.project.his.domain.HisHospital;
 import com.ruoyi.project.his.domain.HisHospitalAppointment;
+import com.ruoyi.project.his.domain.HisUserType;
 import com.ruoyi.project.his.service.IHisHospitalAppointmentService;
+import com.ruoyi.project.his.service.IHisUserTypeService;
 import org.apache.ibatis.annotations.Param;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,6 +33,9 @@ public class HisHospitalAppointmentController extends BaseController
     @Autowired
     private IHisHospitalAppointmentService hisHospitalAppointmentService;
 
+    @Autowired
+    private IHisUserTypeService hisUserTypeService;
+
     /**
      * 查询【获取已经预约的预约信息】列表
      */
@@ -38,18 +43,20 @@ public class HisHospitalAppointmentController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(HisHospitalAppointment hisHospitalAppointment)
     {
+        System.out.println(hisHospitalAppointment);
+        List<HisUserType> userList = hisUserTypeService.selectUserTypeList(hisHospitalAppointment.getUserId());
+        for (int i=0;i<userList.size();i++){
+            if (hisHospitalAppointment.getUserId().equals(userList.get(i).getUserId()) && (userList.get(i).getRoleId() == 1 || userList.get(i).getRoleId() == 100)){
+                hisHospitalAppointment.setUserId(null);
+            }
+        }
         startPage();
         List<HisHospitalAppointment> list = hisHospitalAppointmentService.selectHisHospitalAppointmentList(hisHospitalAppointment);
         return getDataTable(list);
     }
 
     /**
-     * 简述 获取医院和科室的信息
-     * @author 写你自己的名字一般都是英文不可以汉字
-     * @date: 2 13:42
-     * @param hisHospital
-     * @return {@link com.ruoyi.framework.web.page.TableDataInfo }
-     *
+     * 获取医院和科室的信息
      */
     @GetMapping("/message")
     public TableDataInfo message(HisHospital hisHospital){
@@ -58,22 +65,36 @@ public class HisHospitalAppointmentController extends BaseController
     }
 
     /**
-     * 简述 新增预约信息
-     * @author 写你自己的名字一般都是英文不可以汉字
-     * @date:  15:18
-     * @param hisHospitalAppointment
-     * @return {@link AjaxResult }
-     *
+     * 新增预约信息
      */
 //    @PreAuthorize("@ss.hasPermi('system:appointment:add')")
-    @Log(title = "新增预约", businessType = BusinessType.INSERT)
+    @Log(title = "【请填写功能名称】", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody HisHospitalAppointment hisHospitalAppointment)
     {
-        System.out.println("数据是"+hisHospitalAppointment);
-        Long deptsId = hisHospitalAppointment.getDeptsId();
-        hisHospitalAppointmentService.updatedeptNum(deptsId);
         return toAjax(hisHospitalAppointmentService.insertHisHospitalAppointment(hisHospitalAppointment));
+    }
+
+    /**
+     * 修改预约信息
+     */
+//    @PreAuthorize("@ss.hasPermi('system:appointment:edit')")
+    @Log(title = "【请填写功能名称】", businessType = BusinessType.UPDATE)
+    @PutMapping
+    public AjaxResult edit(@RequestBody HisHospitalAppointment hisHospitalAppointment)
+    {
+        return toAjax(hisHospitalAppointmentService.updateHisHospitalAppointment(hisHospitalAppointment));
+    }
+
+    /**
+     * 删除预约信息
+     */
+//    @PreAuthorize("@ss.hasPermi('system:appointment:remove')")
+    @Log(title = "【请填写功能名称】", businessType = BusinessType.DELETE)
+    @DeleteMapping("/{appointmentIds}")
+    public AjaxResult remove(@PathVariable Long[] appointmentIds)
+    {
+        return toAjax(hisHospitalAppointmentService.deleteHisHospitalAppointmentByIds(appointmentIds));
     }
 
 }

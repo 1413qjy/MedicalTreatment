@@ -114,6 +114,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                 .antMatchers("/*/api-docs").anonymous()
                 .antMatchers("/druid/**").anonymous()
                 .antMatchers("/websocket").anonymous()
+                .antMatchers("/websocket/**").anonymous()
+                .antMatchers("/success").anonymous()
+                .antMatchers("/his/alipay/returnUrl").anonymous()
+                .antMatchers("/gateway.do").anonymous()
+
 
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated()

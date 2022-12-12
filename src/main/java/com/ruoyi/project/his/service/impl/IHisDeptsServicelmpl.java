@@ -45,6 +45,11 @@ public class IHisDeptsServicelmpl implements IHisDeptsService {
     }
 
     @Override
+    public HisDeptsCare HisDeptsCareById(Long deptsCareId) {
+        return hisDeptsCareMapper.HisDeptsCareById(deptsCareId);
+    }
+
+    @Override
     public List<HisDeptsCare> selectHisDeptsCareList(HisDeptsCare hisDeptsCare) {
         return hisDeptsCareMapper.selectHisDeptsCareList(hisDeptsCare);
     }
@@ -74,6 +79,25 @@ public class IHisDeptsServicelmpl implements IHisDeptsService {
     @Override
     public int updateHisDeptsCare(HisDeptsCare hisDeptsCare) {
         return hisDeptsCareMapper.updateHisDeptsCare(hisDeptsCare);
+    }
+
+
+    /**
+     * 批量删除【详细科室】
+     */
+    @Override
+    public int deleteHisDeptsCareByIds(Long[] deptsCareIds)
+    {
+        return hisDeptsCareMapper.deleteHisDeptsCareByIds(deptsCareIds);
+    }
+
+    /**
+     * 删除【详细科室】信息
+     */
+    @Override
+    public int deleteHisDeptsCareById(Long deptsCareId)
+    {
+        return hisDeptsCareMapper.deleteHisDeptsCareById(deptsCareId);
     }
 
 }

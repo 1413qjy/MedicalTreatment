@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.his.mapper.HisAllExamineMapper">
+    
+    <resultMap type="HisAllExamine" id="HisAllExamineResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="examineName"    column="examine_name"    />
+        <result property="userId"    column="user_id"    />
+        <result property="indentNumber"    column="indent_number"    />
+    </resultMap>
+
+    <sql id="selectHisAllExamineVo">
+        select id, name, examine_name, user_id, indent_number from his_all_examine
+    </sql>
+
+    <select id="selectHisAllExamineList" parameterType="HisAllExamine" resultMap="HisAllExamineResult">
+        <include refid="selectHisAllExamineVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="examineName != null  and examineName != ''"> and examine_name like concat('%', #{examineName}, '%')</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="indentNumber != null  and indentNumber != ''"> and indent_number = #{indentNumber}</if>
+        </where>
+    </select>
+    
+    <select id="selectHisAllExamineById" parameterType="Long" resultMap="HisAllExamineResult">
+        <include refid="selectHisAllExamineVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertHisAllExamine" parameterType="HisAllExamine">
+        insert into his_all_examine
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="examineName != null">examine_name,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="indentNumber != null">indent_number,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="examineName != null">#{examineName},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="indentNumber != null">#{indentNumber},</if>
+         </trim>
+    </insert>
+
+    <update id="updateHisAllExamine" parameterType="HisAllExamine">
+        update his_all_examine
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="examineName != null">examine_name = #{examineName},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="indentNumber != null">indent_number = #{indentNumber},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteHisAllExamineById" parameterType="Long">
+        delete from his_all_examine where id = #{id}
+    </delete>
+
+    <delete id="deleteHisAllExamineByIds" parameterType="String">
+        delete from his_all_examine where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
